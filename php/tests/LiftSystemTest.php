@@ -51,4 +51,25 @@ class LiftSystemTest extends TestCase
 
         Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
     }
+
+    public function testLiftWithClosedDoorsCanMoveTowardsRequest(): void
+    {
+        $liftA = new Lift('A', 0, [1], false);
+        $lifts = new LiftSystem([0, 1], [$liftA], []);
+
+        $lifts->tick();
+
+        Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
+    }
+
+    public function testLiftWithClosedDoorsCanMoveDownTowardsRequest(): void
+    {
+        $liftA = new Lift('A', 2, [0], false);
+        $lifts = new LiftSystem([0, 1, 2], [$liftA], []);
+
+        $lifts->tick(); // Move to floor 1
+        $lifts->tick(); // Move to floor 0
+
+        Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
+    }
 }

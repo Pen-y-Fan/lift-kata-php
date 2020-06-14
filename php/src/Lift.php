@@ -17,7 +17,7 @@ class Lift
     private $floor;
 
     /**
-     * @var array
+     * @var array<int>
      */
     private $requests;
 
@@ -59,7 +59,7 @@ class Lift
         return $this->doorsOpen;
     }
 
-    public function openDoors()
+    public function openDoorsAndSatisfyAnyRequests(): void
     {
         $this->doorsOpen = true;
         /** @var int $request */
@@ -70,13 +70,58 @@ class Lift
         }
     }
 
-    public function closeDoors()
+    public function closeDoors(): void
     {
         $this->doorsOpen = false;
     }
 
-    public function getDirection()
+    public function getDirection(): Direction
     {
         return $this->direction;
+    }
+
+    public function hasDirection(): bool
+    {
+        return $this->direction !== null;
+    }
+
+    public function setDirection($direction): void
+    {
+        $this->direction = $direction;
+    }
+
+    public function hasRequests(): bool
+    {
+        return count($this->requests) > 0;
+    }
+
+    public function setFloor(int $floor): void
+    {
+        $this->floor = $floor;
+    }
+
+    public function setDirectionOfClosestRequest()
+    {
+        $min = 999999999;
+        $closestFloor = $this->getFloor();
+        foreach ($this->requests as $request) {
+            if (abs($this->floor-$request) < $min ) {
+                $min = abs($this->floor-$request);
+                $closestFloor = $this->floor;
+            }
+        }
+
+        // No match found or there are no requests
+        if ($closestFloor === $this->floor) {
+            $this->direction = null;
+            return;
+        }
+
+        if ($closestFloor < $this->floor) {
+            $this->direction = Direction::DOWN();
+            return;
+        }
+
+        $this->direction = Direction::UP();
     }
 }
