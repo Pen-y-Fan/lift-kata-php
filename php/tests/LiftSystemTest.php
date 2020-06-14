@@ -13,13 +13,21 @@ class LiftSystemTest extends TestCase
 {
     public function testLiftWithNoRequestsDoesNothing(): void
     {
-        /** @var Lift $liftA */
         $liftA = new Lift('A', 0);
-
-        /** @var LiftSystem $lifts */
         $lifts = new LiftSystem([0, 1], [$liftA], []);
 
         $lifts->tick();
+
+        Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
+    }
+
+    public function testLiftWithRequestsOnCurrentFloorOpensDoors(): void
+    {
+        $liftA = new Lift('A', 0, [0], false);
+        $lifts = new LiftSystem([0, 1], [$liftA], []);
+
+        $lifts->tick();
+
         Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
     }
 }

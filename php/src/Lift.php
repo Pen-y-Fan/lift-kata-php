@@ -53,4 +53,15 @@ class Lift
     {
         return $this->doorsOpen;
     }
+
+    public function openDoors()
+    {
+        $this->doorsOpen = true;
+        /** @var int $request */
+        foreach ($this->requests as $k => $v) {
+            if ($this->floor === $v) {
+                unset($this->requests[$k]);
+            }
+        }
+    }
 }

@@ -48,23 +48,19 @@ class LiftSystem
 
     public function tick(): void
     {
-        // TODO: implement this method
+        /** @var Lift $lift */
+        foreach ($this->lifts as $lift) {
+            // a lift fulfills a _request_ when it moves to the requested floor and opens the doors.
+            // when lift has request for floor and lift is on requested floor - lift opens door
+            if ($lift->hasRequestForFloor($lift->getFloor()) && !$lift->areDoorsOpen()) {
+                $lift->openDoors();
+                break;
+            }
+
+            // a lift fulfills a _call_ when it moves to the correct floor, is about to go in the called direction, and opens the doors.
+
+            // a lift can only move between floors if the doors are closed.
+        }
+
     }
-
-    /*
-     * The following features are not yet implemented:
-
-- a lift fulfills a _request_ when it moves to the requested floor and opens the doors.
-- a lift fulfills a _call_ when it moves to the correct floor, is about to go in the called direction, and opens the doors.
-- a lift can only move between floors if the doors are closed.
-
-Lifts do not respond immediately or do everything at once. To simplify handling time in this exercise, the provided LiftSystem class has a 'tick' method. Every time you call it, the lift system should simulate a unit of time passing, and update its state according to what changes occurred during that time period. Lifts can move between floors or open their doors for example.
-
-To simplify things, Lifts only accept new calls and requests when they are on a floor. (Then we don't have to model what happens when they are between floors).
-
-The starting code has a Lift class with basic attributes like a floor, requests and doors. Can you build on this code and create something that fulfills all the desired features? Consider Object-Oriented design principles. Can you make Lift and LiftSystem into a well-designed encapsulated objects?
-
-
-     */
-
 }
