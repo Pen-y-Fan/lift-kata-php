@@ -88,7 +88,6 @@ class LiftSystemTest extends TestCase
         Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
     }
 
-
     public function testSingleLiftSystem(): void
     {
         $liftA = new Lift('A', 4, [2, 4], false);

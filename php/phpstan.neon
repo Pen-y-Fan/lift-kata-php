@@ -32,9 +32,5 @@ parameters:
     # cache buggy
 
     # tests
-        # Starter code which needs to be implmented
-            -
-                message: '#Unreachable statement - code above always terminates#'
-                path: tests\LiftSystemTest.php
 
     # iterable

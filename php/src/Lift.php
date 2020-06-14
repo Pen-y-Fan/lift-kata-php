@@ -25,6 +25,7 @@ class Lift
      * @var boolean
      */
     private $doorsOpen;
+
     /**
      * @var Direction
      */
@@ -62,10 +63,9 @@ class Lift
     public function openDoorsAndSatisfyAnyRequests(): void
     {
         $this->doorsOpen = true;
-        /** @var int $request */
-        foreach ($this->requests as $k => $v) {
-            if ($this->floor === $v) {
-                unset($this->requests[$k]);
+        foreach ($this->requests as $key => $floor) {
+            if ($this->floor === $floor) {
+                unset($this->requests[$key]);
             }
         }
     }
@@ -82,10 +82,10 @@ class Lift
 
     public function isMoving(): bool
     {
-        return !$this->stop();
+        return ! $this->isStopped();
     }
 
-    public function setDirection($direction): void
+    public function setDirection(Direction $direction): void
     {
         $this->direction = $direction;
     }
@@ -100,13 +100,13 @@ class Lift
         $this->floor = $floor;
     }
 
-    public function setDirectionOfClosestRequest()
+    public function setDirectionOfClosestRequest(): void
     {
         $min = 999999999;
         $closestFloor = $this->getFloor();
         foreach ($this->requests as $request) {
-            if (abs($this->floor-$request) < $min ) {
-                $min = abs($this->floor-$request);
+            if (abs($this->floor - $request) < $min) {
+                $min = abs($this->floor - $request);
                 $closestFloor = $this->floor;
             }
         }
@@ -125,7 +125,7 @@ class Lift
         $this->direction = Direction::UP();
     }
 
-    public function goingDown()
+    public function isGoingDown(): bool
     {
         if ($this->direction === null) {
             return false;
@@ -133,12 +133,12 @@ class Lift
         return $this->direction->equals(Direction::DOWN());
     }
 
-    public function goingUp()
+    public function isGoingUp(): bool
     {
         return $this->direction->equals(Direction::UP());
     }
 
-    public function stop()
+    public function isStopped(): bool
     {
         return $this->direction->equals(Direction::STOP());
     }
@@ -149,11 +149,11 @@ class Lift
             return false;
         }
 
-        if ($this->goingUp()) {
+        if ($this->isGoingUp()) {
             return max($this->requests) > $this->floor;
         }
 
-        if ($this->goingDown()) {
+        if ($this->isGoingDown()) {
             return min($this->requests) < $this->floor;
         }
         // Direction is STOP.

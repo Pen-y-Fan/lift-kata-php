@@ -52,7 +52,7 @@ class LiftSystem
         foreach ($this->lifts as $lift) {
             // a lift fulfills a _request_ when it moves to the requested floor and opens the doors.
             // when lift has request for floor and lift is on requested floor - lift opens door
-            if ($lift->hasRequestForFloor($lift->getFloor()) && !$lift->areDoorsOpen()) {
+            if ($lift->hasRequestForFloor($lift->getFloor()) && ! $lift->areDoorsOpen()) {
                 $lift->openDoorsAndSatisfyAnyRequests();
                 break;
             }
@@ -65,7 +65,7 @@ class LiftSystem
             // a lift fulfills a _call_ when it moves to the correct floor, is about to go in the called direction, and opens the doors.
             if (
                 $this->isDirectionOfTravelRequiredCall($lift)
-                && !$lift->areDoorsOpen()
+                && ! $lift->areDoorsOpen()
             ) {
                 $lift->openDoorsAndSatisfyAnyRequests();
                 $this->cancelCallForFloorInRequiredDirection($lift);
@@ -99,7 +99,7 @@ class LiftSystem
         return false;
     }
 
-    private function cancelCallForFloorInRequiredDirection(Lift $lift)
+    private function cancelCallForFloorInRequiredDirection(Lift $lift): void
     {
         /**
          * @var int $key
@@ -112,7 +112,7 @@ class LiftSystem
         }
     }
 
-    private function moveLift(Lift $lift)
+    private function moveLift(Lift $lift): void
     {
         // a lift can only move between floors if the doors are closed.
         if ($lift->areDoorsOpen()) {
@@ -120,13 +120,13 @@ class LiftSystem
         }
 
         // Stop at top floor
-        if ($this->isTopFloor($lift) && $lift->goingUp()) {
+        if ($this->isTopFloor($lift) && $lift->isGoingUp()) {
             $lift->setDirection(Direction::STOP());
             return;
         }
 
         // Stop at bottom floor
-        if ($this->isBottomFloor($lift) && $lift->goingDown()) {
+        if ($this->isBottomFloor($lift) && $lift->isGoingDown()) {
             $lift->setDirection(Direction::STOP());
             return;
         }
@@ -137,7 +137,7 @@ class LiftSystem
         }
 
         // Move in direction between floors
-        foreach ($this->floors as $key => $floor) {
+        foreach ($this->floors as $floor) {
             if ($floor === $lift->getFloor()) {
                 $this->moveLiftFloor($lift);
                 return;
@@ -150,7 +150,7 @@ class LiftSystem
         return count($this->calls) > 0;
     }
 
-    private function moveLiftFloor(Lift $lift)
+    private function moveLiftFloor(Lift $lift): void
     {
         if ($this->isTopFloor($lift)) {
             $lift->setDirection(Direction::DOWN());
@@ -173,31 +173,31 @@ class LiftSystem
         }
     }
 
-    private function isTopFloor($lift)
+    private function isTopFloor(Lift $lift): bool
     {
-        return $lift->getFloor() === $this->floors[count($this->floors)-1];
+        return $lift->getFloor() === $this->floors[count($this->floors) - 1];
     }
 
-    private function isBottomFloor($lift)
+    private function isBottomFloor(Lift $lift): bool
     {
         return $lift->getFloor() === $this->floors[0];
     }
 
-    private function moveInDirection(Lift $lift)
+    private function moveInDirection(Lift $lift): void
     {
         if ($lift->getDirection()->equals(Direction::DOWN())) {
-            $lift->setFloor($lift->getFloor() -1);
+            $lift->setFloor($lift->getFloor() - 1);
             return;
         }
         if ($lift->getDirection()->equals(Direction::UP())) {
-            $lift->setFloor($lift->getFloor() +1);
+            $lift->setFloor($lift->getFloor() + 1);
             return;
         }
     }
 
-    private function hasNoRequestsOrCalls($lift): bool
+    private function hasNoRequestsOrCalls(Lift $lift): bool
     {
-        return !$lift->hasRequests() && !$this->hasCalls();
+        return ! $lift->hasRequests() && ! $this->hasCalls();
     }
 
     private function hasNoMoreRequestsInDirectionAndFloorHasCall(Lift $lift): bool
