@@ -57,9 +57,16 @@ class LiftSystem
                 break;
             }
 
+            // Only one request per tick.
+            if ($lift->areDoorsOpen()) {
+                $lift->closeDoors();
+                break;
+            }
             // a lift fulfills a _call_ when it moves to the correct floor, is about to go in the called direction, and opens the doors.
 
             // a lift can only move between floors if the doors are closed.
+
+
         }
 
     }

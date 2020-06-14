@@ -64,4 +64,9 @@ class Lift
             }
         }
     }
+
+    public function closeDoors()
+    {
+        $this->doorsOpen = false;
+    }
 }

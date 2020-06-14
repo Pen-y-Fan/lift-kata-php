@@ -30,4 +30,14 @@ class LiftSystemTest extends TestCase
 
         Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
     }
+
+    public function testLiftWithNoRequestsOnCurrentFloorWithOpensDoorsClosesDoors(): void
+    {
+        $liftA = new Lift('A', 0, [1], true);
+        $lifts = new LiftSystem([0, 1], [$liftA], []);
+
+        $lifts->tick();
+
+        Approvals::verifyString((new LiftSystemPrinter())->printWithDoors($lifts));
+    }
 }
