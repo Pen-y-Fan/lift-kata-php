@@ -63,11 +63,46 @@ class LiftSystem
                 break;
             }
             // a lift fulfills a _call_ when it moves to the correct floor, is about to go in the called direction, and opens the doors.
+            if (
+                count($this->getCallsForFloor($lift->getFloor())) > 0
+                && $this->isDirectionOfTravelRequiredCall($lift)
+                && !$lift->areDoorsOpen()
+            ) {
+                $lift->openDoors();
+                $this->cancelCallForFloorInRequiredDirection($lift);
+                break;
+            }
 
             // a lift can only move between floors if the doors are closed.
 
 
         }
 
+    }
+
+    private function isDirectionOfTravelRequiredCall(Lift $lift): bool
+    {
+        /**
+         * @var int $k
+         * @var Call $call */
+        foreach ($this->getCallsForFloor($lift->getFloor()) as $k => $call) {
+            if ($call->getDirection()->equals($lift->getDirection())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function cancelCallForFloorInRequiredDirection(Lift $lift)
+    {
+        /**
+         * @var int $key
+         * @var Call $call
+         */
+        foreach ($this->calls as $key => $call) {
+            if ($call->getDirection()->equals($lift->getDirection())) {
+                unset($this->calls[$key]);
+            }
+        }
     }
 }

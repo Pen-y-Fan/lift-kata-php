@@ -25,6 +25,10 @@ class Lift
      * @var boolean
      */
     private $doorsOpen;
+    /**
+     * @var null|Direction
+     */
+    private $direction;
 
     public function __construct(string $id, int $floor, array $requests = [], bool $doorsOpen = false)
     {
@@ -32,6 +36,7 @@ class Lift
         $this->floor = $floor;
         $this->requests = $requests;
         $this->doorsOpen = $doorsOpen;
+        $this->direction = null;
     }
 
     public function getId(): string
@@ -68,5 +73,10 @@ class Lift
     public function closeDoors()
     {
         $this->doorsOpen = false;
+    }
+
+    public function getDirection()
+    {
+        return $this->direction;
     }
 }
