@@ -58,9 +58,7 @@ When you have a single lift working well, you may want to tackle these further f
 
 Note: the printer does not currently show the lift monitor and the ding.
 
-
 Acknowledgements
 ----------------
 
 I based this exercise on the one described at https://kata-log.rocks/lift-kata
-

@@ -30,13 +30,12 @@ class LiftTest extends TestCase
         $this->assertSame(true, $lift->areDoorsOpen());
     }
 
-    public function testLiftDoorsCanHaveNoRequests(): void
+    public function testLiftCanHaveNoRequests(): void
     {
         $lift = new Lift('A', 0);
 
         $this->assertFalse($lift->hasRequestForFloor(0));
         $this->assertFalse($lift->hasRequestForFloor(1));
         $this->assertFalse($lift->hasRequestForFloor(2));
-        $this->assertSame(false, $lift->areDoorsOpen());
     }
 }

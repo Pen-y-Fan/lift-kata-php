@@ -11,10 +11,8 @@ use PHPUnit\Framework\TestCase;
 
 class LiftSystemTest extends TestCase
 {
-    // TODO: enable this test and finish writing it
-    public function testDoSomething(): void
+    public function testLiftWithNoRequestsDoesNothing(): void
     {
-        $this->markTestSkipped('Enable this test and finish writing it');
         /** @var Lift $liftA */
         $liftA = new Lift('A', 0);
 
