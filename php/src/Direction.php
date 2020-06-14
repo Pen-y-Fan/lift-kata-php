@@ -11,6 +11,7 @@ use MyCLabs\Enum\Enum;
  *
  * @method static Direction UP
  * @method static Direction DOWN
+ * @method static Direction STOP
  * @method bool equals(Direction $type = null)
  * @package Lift
  */
@@ -19,4 +20,6 @@ class Direction extends Enum
     private const UP = 'up';
 
     private const DOWN = 'down';
+
+    private const STOP = 'stop';
 }

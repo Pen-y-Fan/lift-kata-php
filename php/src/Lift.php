@@ -26,7 +26,7 @@ class Lift
      */
     private $doorsOpen;
     /**
-     * @var null|Direction
+     * @var Direction
      */
     private $direction;
 
@@ -36,7 +36,7 @@ class Lift
         $this->floor = $floor;
         $this->requests = $requests;
         $this->doorsOpen = $doorsOpen;
-        $this->direction = null;
+        $this->direction = Direction::STOP();
     }
 
     public function getId(): string
@@ -80,9 +80,9 @@ class Lift
         return $this->direction;
     }
 
-    public function hasDirection(): bool
+    public function isMoving(): bool
     {
-        return $this->direction !== null;
+        return !$this->stop();
     }
 
     public function setDirection($direction): void
@@ -113,7 +113,7 @@ class Lift
 
         // No match found or there are no requests
         if ($closestFloor === $this->floor) {
-            $this->direction = null;
+            $this->direction = Direction::STOP();
             return;
         }
 
@@ -123,5 +123,40 @@ class Lift
         }
 
         $this->direction = Direction::UP();
+    }
+
+    public function goingDown()
+    {
+        if ($this->direction === null) {
+            return false;
+        }
+        return $this->direction->equals(Direction::DOWN());
+    }
+
+    public function goingUp()
+    {
+        return $this->direction->equals(Direction::UP());
+    }
+
+    public function stop()
+    {
+        return $this->direction->equals(Direction::STOP());
+    }
+
+    public function hasRequestsInDirection(): bool
+    {
+        if (count($this->requests) === 0) {
+            return false;
+        }
+
+        if ($this->goingUp()) {
+            return max($this->requests) > $this->floor;
+        }
+
+        if ($this->goingDown()) {
+            return min($this->requests) < $this->floor;
+        }
+        // Direction is STOP.
+        return false;
     }
 }
